@@ -523,7 +523,47 @@
         }
     </style>
 
-	
+	<style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+    .popup-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+    .share-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    .share-icon {
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+    }
+</style>
     
     <!-- تحسينات SEO -->
     <meta name="description" content="احصل على أحدث أكواد الخصم، كوبونات الشراء، خصومات وعروض لتوفير المال عند التسوق عبر الإنترنت.">
@@ -839,24 +879,70 @@
     <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-4 mb-4">
-            <div class="card">
-                <span class="badge badge-trending">رائج</span>
-                <span class="status status-active">فعال</span>
-                <img src="images/Coupon_pictures/نون.png" class="card-img-top" alt="Coupon">
-                <div class="card-body text-center">
-                    <h5 class="card-title">كوبون نون10% لجميع المستخدمين في مصر و السعودية والامارات</h5>
-                    <p class="card-text">استخدم الكود: <strong>TR49</strong></p>
-                    <a href="Noon_page.html"target="_blank" class="btn btn-primary">تفاصيل أكثر</a>
-                </div>
-                <div class="card-footer">
-                    <div class="footer-icons">
-                        <span><i class="fa fa-users"></i> <span id="userCount">1234</span> مستخدم</span>
-					    <span><i class="fas fa-share-alt"></i> <button onclick="shareCoupon()" style="border: none; background: none; padding: 0;">مشاركة</button></span>
-                        <span><i class="fas fa-clock"></i> <span id="lastUpdated">5 ساعات</span></span>
-                    </div>
-                </div>
+    <div class="card">
+        <span class="badge badge-trending">رائج</span>
+        <span class="status status-active">فعال</span>
+        <img src="images/Coupon_pictures/نون.png" class="card-img-top" alt="Coupon">
+        <div class="card-body text-center">
+            <h5 class="card-title">كوبون نون10% لجميع المستخدمين في مصر و السعودية والامارات</h5>
+            <p class="card-text">استخدم الكود: <strong>TR49</strong></p>
+            <a href="Coupon_page/Noon_page.html" target="_blank" class="btn btn-primary">تفاصيل أكثر</a>
+        </div>
+        <div class="card-footer">
+            <div class="footer-icons">
+                <span><i class="fa fa-users"></i> <span id="userCount">1234</span> مستخدم</span>
+                <span><i class="fas fa-share-alt"></i> <button onclick="openSharePopup('استخدم كود TR49 للحصول على خصم 10%!')" style="border: none; background: none; padding: 0; cursor: pointer;">مشاركة</button></span>
+                <span><i class="fas fa-clock"></i> <span id="lastUpdated">5 ساعات</span></span>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- نافذة المشاركة المنبثقة -->
+<div id="share-popup" class="popup hidden">
+    <div class="popup-content">
+        <span class="close-btn" onclick="closeSharePopup()">&#10006;</span>
+        <p id="share-text">نص المشاركة</p>
+        <div class="share-buttons">
+            <a href="#" id="whatsapp-share" target="_blank">
+                <img src="\كوبون 24\images\Logo\وتس.png" alt="WhatsApp" class="share-icon">
+            </a>
+            <a href="#" id="messenger-share" target="_blank">
+                <img src="\كوبون 24\images\Logo\مسنجر.png" alt="Messenger" class="share-icon">
+            </a>
+            <a href="#" id="telegram-share" target="_blank">
+                <img src="\كوبون 24\images\Logo\تليجرام.png" alt="Telegram" class="share-icon">
+            </a>
+            <a href="#" id="x-share" target="_blank">
+                <img src="\كوبون 24\images\Logo\اكس.png" alt="X" class="share-icon">
+            </a>
+        </div>
+    </div>
+</div>
+<!-- JavaScript -->
+<script>
+    function openSharePopup(text) {
+        const popup = document.getElementById('share-popup');
+        const shareText = document.getElementById('share-text');
+
+        // تحديث النص داخل النافذة
+        shareText.textContent = text;
+
+        // تحديث روابط المشاركة
+        document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        document.getElementById('messenger-share').href = `https://www.messenger.com/t/?text=${encodeURIComponent(text)}`;
+        document.getElementById('telegram-share').href = `https://t.me/share/url?url=${encodeURIComponent(text)}`;
+        document.getElementById('x-share').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+
+        // إظهار النافذة
+        popup.style.display = 'block';
+    }
+
+    function closeSharePopup() {
+        const popup = document.getElementById('share-popup');
+        popup.style.display = 'none';
+    }
+</script>
 
         <div class="col-md-4 mb-4">
             <div class="card">
