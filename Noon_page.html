@@ -429,6 +429,48 @@
         }
     </style>
 
+	<style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+    .popup-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+    .share-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    .share-icon {
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+    }
+</style>
+
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 	
 </head>
@@ -512,38 +554,69 @@
                     <i class="bi bi-people-fill me-2"></i>
                     <span>1231 مستخدم</span>
                 </div>
-<div class="d-flex align-items-center position-relative">
-        <i class="bi bi-share me-2" onclick="toggleShareLinks(this)" style="cursor: pointer;"></i>
-        <span>مشاركة</span>
-        <div class="share-links">
-            <a href="https://www.messenger.com/?locale=ar_AR?text=احصل على خصم 50% باستخدام كود موقع نون مصر TR49. رابط الشراء. https://www.noon.com/egypt-ar/كوبون نون مصر.html" target="_blank" style="background-image: url('/كوبون%2024/images/لوجو/لوجو%20مسنجر.webp');" title="مسنجر"></a>
-            <a href="https://wa.me/?text=احصل على خصم 50% باستخدام كود موقع نون مصر TR49. رابط الشراء: https://www.noon.com/egypt-ar/" target="_blank" style="background-image: url('https://cdn-icons-png.flaticon.com/512/124/124034.png');" title="واتساب"></a>
-            <a href="https://t.me/share/url?url=https:https:=احصل على خصم 50% باستخدام كود موقع نون مصر TR49. رابط الشراء. رابط الشراء : //www.noon.com/egypt-ar/" target="_blank" style="background-image: url('https://cdn-icons-png.flaticon.com/512/2111/2111646.png');" title="تيليجرام"></a>
-            <a href="https://twitter.com/intent/tweet?text=احصل على خصم 50% باستخدام كود موقع نون مصر TR49. رابط الشراء:https://www.noon.com/egypt-ar/" target="_blank" style="background-image: url('/كوبون%2024/images/لوجو/لوجو%20منصه%20اكس.webp');" title="تويتر"></a>
+                <div class="d-flex align-items-center position-relative">
+                    <i class="bi bi-share me-2" onclick="openSharePopup('احصل على خصم 50% باستخدام كود TR49. رابط الشراء: https://www.noon.com/egypt-ar/')" style="cursor: pointer;"></i>
+                    <span>مشاركة</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-clock-history me-2"></i>
+                    <span>منذ 48 ساعة</span>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
+<!-- نافذة المشاركة المنبثقة -->
+<div id="share-popup" class="popup hidden">
+    <div class="popup-content">
+        <span class="close-btn" onclick="closeSharePopup()">&#10006;</span>
+        <p id="share-text">نص المشاركة</p>
+        <div class="share-buttons">
+            <a href="#" id="whatsapp-share" target="_blank">
+                <img src="\كوبون 24\images\Logo\وتس.png" alt="WhatsApp" class="share-icon">
+            </a>
+            <a href="#" id="messenger-share" target="_blank">
+                <img src="\كوبون 24\images\Logo\مسنجر.png" alt="Messenger" class="share-icon">
+            </a>
+            <a href="#" id="telegram-share" target="_blank">
+                <img src="\كوبون 24\images\Logo\تليجرام.png" alt="Telegram" class="share-icon">
+            </a>
+            <a href="#" id="x-share" target="_blank">
+                <img src="\كوبون 24\images\Logo\اكس.png" alt="X" class="share-icon">
+            </a>
+        </div>
+    </div>
+</div>
+
+
 
     <!-- JavaScript -->
     <script>
-        function toggleShareLinks(icon) {
-            // إغلاق جميع الصناديق
-            document.querySelectorAll('.share-links').forEach(shareBox => {
-                shareBox.style.display = 'none';
-            });
+        function openSharePopup(text) {
+    const popup = document.getElementById('share-popup');
+    const shareText = document.getElementById('share-text');
 
-            // عرض الصندوق الخاص بالكارت المضغوط
-            const shareLinks = icon.closest('.position-relative').querySelector('.share-links');
-            shareLinks.style.display = shareLinks.style.display === 'block' ? 'none' : 'block';
-        }
+    // تحديث النص داخل النافذة
+    shareText.textContent = text;
 
-        // إغلاق الصناديق عند النقر خارجها
-        window.addEventListener('click', function (e) {
-            if (!e.target.closest('.position-relative')) {
-                document.querySelectorAll('.share-links').forEach(shareBox => {
-                    shareBox.style.display = 'none';
-                });
-            }
-        });
+    // تحديث روابط المشاركة
+    document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    document.getElementById('messenger-share').href = `https://www.messenger.com/?locale=ar_AR&text=${encodeURIComponent(text)}`;
+    document.getElementById('telegram-share').href = `https://t.me/share/url?url=${encodeURIComponent(text)}`;
+    document.getElementById('x-share').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+
+    // إظهار النافذة
+    popup.style.display = 'block';
+    document.body.classList.add('popup-open');
+}
+
+function closeSharePopup() {
+    const popup = document.getElementById('share-popup');
+    popup.style.display = 'none';
+    document.body.classList.remove('popup-open');
+}
+
     </script>
                 <div class="d-flex align-items-center">
                     <i class="bi bi-clock-history me-2"></i>
