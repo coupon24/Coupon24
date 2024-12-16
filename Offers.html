@@ -427,119 +427,29 @@
 
 
 	<style>
-/* تنسيق الهيدر */
-
-/* تنسيق الهيدر */
-.navbar {
-    padding: 15px 20px;
-    background-color: #f8f9fa; /* لون رمادي فاتح */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #333;
-}
-
-.logo {
-    width: 60px; /* حجم الشعار أكبر */
-    height: auto;
-}
-
-.navbar-nav {
-    flex-direction: row;
-}
-
-.nav-link {
-    padding: 10px 15px;
-    font-size: 16px;
-    color: #333;
-}
-
-.nav-link:hover {
-    color: #007bff;
-}
-
-/* مربع البحث */
-.search-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    position: relative;
-    max-width: 300px;
-}
-
-#searchInput {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 8px 10px;
-    font-size: 14px;
-}
-
-#searchButton {
-    background-color: #007bff;
-    border: none;
-    color: #fff;
-    padding: 8px 10px;
-    border-radius: 5px;
-}
-
-#searchButton i {
-    font-size: 14px;
-}
-
-/* قائمة النتائج */
-#searchResults {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 1050;
-    display: none;
-}
-
-#searchResults li {
-    padding: 8px 10px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-#searchResults li:hover {
-    background-color: #f1f1f1;
-}
-
-/* للجوال */
-@media screen and (max-width: 768px) {
-    .navbar-brand {
-        font-size: 16px;
-    }
-
     .search-container {
-        margin-top: 10px;
-        width: 100%;
+        position: relative;
     }
 
-    #searchInput {
-        width: 80%;
+    #searchResults {
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        background: #fff;
+        border: 1px solid #ddd;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
     }
 
-    #searchButton {
-        width: 20%;
+    #searchResults li {
+        padding: 10px;
+        cursor: pointer;
     }
-}
 
+    #searchResults li:hover {
+        background-color: #f8f9fa;
+    }
 </style>
 	
 </head>
@@ -550,10 +460,10 @@
 		
 		<!-- شريط التنقل -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-light-gray">
-    <div class="container-fluid">
+    <div class="container-fluid justify-content-between">
         <!-- الشعار -->
         <a class="navbar-brand d-flex align-items-center" href="index.html">
-            <img src="images\Logo\logo24.png" alt="شعار الموقع" class="logo" />
+            <img src="\كوبون 24\images\Logo\logo24.png" alt="شعار الموقع" class="logo" />
             الرئيسية
         </a>
 
@@ -588,82 +498,83 @@
                     <a class="nav-link" href="Contact_us.html">تواصل معنا</a>
                 </li>
             </ul>
+        </div>
 
-            <!-- مربع البحث -->
-            <div class="search-container d-flex">
-                <input type="text" class="form-control" id="searchInput" placeholder="ابحث عن كوبونات..." />
-                <button class="btn btn-primary" id="searchButton" type="button">
-                    <i class="fas fa-search"></i>
-                </button>
-                <ul id="searchResults" class="dropdown-menu"></ul>
-            </div>
+        <!-- مربع البحث -->
+        <div class="search-container d-flex align-items-center position-relative">
+            <input type="text" class="form-control me-2" id="searchInput" placeholder="ابحث عن كوبونات..." />
+            <button class="btn btn-primary" id="searchButton" type="button">
+                <i class="fas fa-search"></i>
+            </button>
+            <ul id="searchResults" class="dropdown-menu position-absolute w-100"></ul>
         </div>
     </div>
 </nav>
 
 
 <script>
-// التبديل بين عرض وإخفاء القائمة في الجوال
-const menuToggle = document.getElementById("menuToggle");
-const navbarMenu = document.getElementById("navbarMenu");
+    // زر القائمة
+    const menuToggle = document.getElementById("menuToggle");
+    const navbarMenu = document.getElementById("navbarMenu");
 
-menuToggle.addEventListener("click", () => {
-    navbarMenu.classList.toggle("active");
-});
+    menuToggle.addEventListener("click", () => {
+        navbarMenu.classList.toggle("active");
+    });
 
-// ديناميكية البحث
-const searchInput = document.getElementById("searchInput");
-const searchResults = document.getElementById("searchResults");
+    // مربع البحث
+    const searchInput = document.getElementById("searchInput");
+    const searchResults = document.getElementById("searchResults");
 
-// قائمة الصفحات المتاحة للبحث
-const pages = [
-    { name: "صفحة كوبونات نون", url: "noon-coupons.html" },
-    { name: "صفحة كوبونات أمازون", url: "amazon-coupons.html" },
-    { name: "صفحة كوبونات جوميا", url: "jumia-coupons.html" },
-    { name: "صفحة كوبونات دكتور نيوترشن", url: "dr-nutrition-coupons.html" },
-    { name: "صفحة كوبونات دبي فون", url: "dubai-phone-coupons.html" },
-];
+    // قائمة الصفحات المتاحة للبحث
+    const pages = [
+        { name: "صفحة كوبونات نون", url: "noon-coupons.html" },
+        { name: "صفحة كوبونات أمازون", url: "amazon-coupons.html" },
+        { name: "صفحة كوبونات جوميا", url: "jumia-coupons.html" },
+        { name: "صفحة كوبونات دكتور نيوترشن", url: "dr-nutrition-coupons.html" },
+        { name: "صفحة كوبونات دبي فون", url: "dubai-phone-coupons.html" },
+    ];
 
-// البحث وعرض النتائج
-function searchPages(query) {
-    searchResults.innerHTML = ""; // تفريغ النتائج السابقة
-    if (!query.trim()) {
-        searchResults.style.display = "none";
-        return;
-    }
+    // البحث عن الصفحات وعرض النتائج
+    function searchPages(query) {
+        searchResults.innerHTML = ""; // تفريغ النتائج السابقة
+        if (!query.trim()) {
+            searchResults.style.display = "none";
+            return;
+        }
 
-    const filteredPages = pages.filter(page =>
-        page.name.toLowerCase().includes(query.toLowerCase())
-    );
+        const filteredPages = pages.filter(page =>
+            page.name.includes(query)
+        );
 
-    if (filteredPages.length > 0) {
-        filteredPages.forEach(page => {
-            const li = document.createElement("li");
-            li.textContent = page.name;
-            li.addEventListener("click", () => {
-                window.open(page.url, "_blank"); // فتح الصفحة في تبويب جديد
+        if (filteredPages.length > 0) {
+            filteredPages.forEach(page => {
+                const li = document.createElement("li");
+                li.textContent = page.name;
+                li.addEventListener("click", () => {
+                    window.open(page.url, "_blank"); // فتح الصفحة في تبويب جديد
+                });
+                searchResults.appendChild(li);
             });
+            searchResults.style.display = "block"; // عرض النتائج
+        } else {
+            const li = document.createElement("li");
+            li.textContent = "لا توجد نتائج مطابقة.";
             searchResults.appendChild(li);
-        });
-        searchResults.style.display = "block"; // عرض القائمة
-    } else {
-        searchResults.innerHTML = "<li>لا توجد نتائج مطابقة.</li>";
-        searchResults.style.display = "block";
+            searchResults.style.display = "block"; // عرض رسالة "لا نتائج"
+        }
     }
-}
 
-// إضافة الأحداث
-searchInput.addEventListener("input", () => {
-    const query = searchInput.value;
-    searchPages(query);
-});
+    // إضافة الأحداث
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value;
+        searchPages(query);
+    });
 
-document.addEventListener("click", (e) => {
-    if (!e.target.closest(".search-container")) {
-        searchResults.style.display = "none"; // إخفاء النتائج عند النقر خارج مربع البحث
-    }
-});
-
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-container")) {
+            searchResults.style.display = "none"; // إخفاء القائمة عند النقر خارج مربع البحث
+        }
+    });
 </script>
     </header>
 
