@@ -817,53 +817,70 @@
 					
 					
      <nav class="navbar navbar-expand-lg navbar-dark bg-light-gray">
-            <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="index.html">
-                    <img src="images/Logo/logo24.png" alt="شعار الموقع" class="logo" />
-                    الرئيسية
-                </a>
-                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navbarMenu">
-                    <i class="fas fa-bars"></i>
-                </button>
+    <div class="container-fluid">
+        <!-- الشعار -->
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="images\Logo\logo24.png" alt="شعار الموقع" class="logo" />
+            الرئيسية
+        </a>
 
-                <!-- عناصر شريط التنقل -->
-                <div class="navbar-collapse text-center" id="navbarMenu">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                        <li class="nav-item mx-2"><a class="nav-link active" href="Stores.html">اشهر المتاجر</a></li>
-                        <li class="nav-item mx-2"><a class="nav-link" href="Offers.html">العروض</a></li>
-                        <li class="nav-item dropdown mx-2">
-                            <a class="nav-link dropdown-toggle" href="#" id="categoriesButton">التصنيفات</a>
-                            <div class="dropdown-menu">
-                                <a href="clothing.html">ملابس</a>
-                                <a href="accessories.html">إكسسوارات</a>
-                                <a href="beauty.html">الجمال</a>
-                                <a href="fashion.html">الموضة</a>
-                                <a href="health.html">الصحة</a>
-                                <a href="fitness.html">اللياقة</a>
-                                <a href="electronics.html">الإلكترونيات</a>
-                                <a href="home.html">المنزل</a>
-                            </div>
-                        </li>
-                        <li class="nav-item mx-2"><a class="nav-link" href="Contact_us.html">تواصل معنا</a></li>
-                    </ul>
+        <!-- زر القائمة للجوال -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
 
-                    <!-- مربع البحث -->
-                    <div class="search-container d-flex">
-                        <input type="text" class="form-control" id="searchInput" placeholder="ابحث عن كوبونات..." />
-                        <button class="btn btn-primary" id="searchButton" type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <ul id="searchResults" class="dropdown-menu"></ul>
+        <!-- عناصر شريط التنقل -->
+        <div class="navbar-collapse text-center" id="navbarMenu">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item mx-2">
+                    <a class="nav-link active" href="Stores.html">اشهر المتاجر</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link" href="Offers.html">العروض</a>
+                </li>
+                <li class="nav-item dropdown mx-2">
+                    <a class="nav-link dropdown-toggle" href="#" id="categoriesButton">التصنيفات</a>
+                    <div class="dropdown-menu">
+                        <a href="clothing.html">ملابس</a>
+                        <a href="accessories.html">إكسسوارات</a>
+                        <a href="beauty.html">الجمال</a>
+                        <a href="fashion.html">الموضة</a>
+                        <a href="health.html">الصحة</a>
+                        <a href="fitness.html">اللياقة</a>
+                        <a href="electronics.html">الإلكترونيات</a>
+                        <a href="home.html">المنزل</a>
                     </div>
-                </div>
-            </div>
-        </nav>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link" href="Contact_us.html">تواصل معنا</a>
+                </li>
+            </ul>
 
-        <!-- JavaScript -->
-        <script>
-            // تحسين البحث لمنع عمليات غير ضرورية
-            const searchInput = document.getElementById("searchInput");
-            const searchResults = document.getElementById("searchResults");
+            <!-- مربع البحث -->
+            <div class="search-container d-flex">
+                <input type="text" class="form-control" id="searchInput" placeholder="ابحث عن كوبونات..." />
+                <button class="btn btn-primary" id="searchButton" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+                <ul id="searchResults" class="dropdown-menu"></ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<script>
+// التبديل بين عرض وإخفاء القائمة في الجوال
+const menuToggle = document.getElementById("menuToggle");
+const navbarMenu = document.getElementById("navbarMenu");
+
+menuToggle.addEventListener("click", () => {
+    navbarMenu.classList.toggle("active");
+});
+
+// ديناميكية البحث
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
 
 // قائمة الصفحات المتاحة للبحث
 const pages = [
@@ -909,46 +926,45 @@ const pages = [
 ];
 
 // البحث وعرض النتائج
- let typingTimeout;
-            function searchPages(query) {
-                searchResults.innerHTML = "";
-                if (!query.trim()) {
-                    searchResults.style.display = "none";
-                    return;
-                }
+function searchPages(query) {
+    searchResults.innerHTML = ""; // تفريغ النتائج السابقة
+    if (!query.trim()) {
+        searchResults.style.display = "none";
+        return;
+    }
 
-                const filteredPages = pages.filter(page =>
-                    page.name.toLowerCase().includes(query.toLowerCase())
-                );
+    const filteredPages = pages.filter(page =>
+        page.name.toLowerCase().includes(query.toLowerCase())
+    );
 
-                if (filteredPages.length > 0) {
-                    filteredPages.forEach(page => {
-                        const li = document.createElement("li");
-                        li.textContent = page.name;
-                        li.addEventListener("click", () => window.open(page.url, "_blank"));
-                        searchResults.appendChild(li);
-                    });
-                    searchResults.style.display = "block";
-                } else {
-                    searchResults.innerHTML = "<li>لا توجد نتائج مطابقة.</li>";
-                    searchResults.style.display = "block";
-                }
-            }
-
-            // استخدام الـ setTimeout لتقليل العمليات المستمرة
-            searchInput.addEventListener("input", () => {
-                clearTimeout(typingTimeout);
-                typingTimeout = setTimeout(() => {
-                    searchPages(searchInput.value);
-                }, 300); // تأخير 300ms بعد آخر حرف مكتوب
+    if (filteredPages.length > 0) {
+        filteredPages.forEach(page => {
+            const li = document.createElement("li");
+            li.textContent = page.name;
+            li.addEventListener("click", () => {
+                window.open(page.url, "_blank"); // فتح الصفحة في تبويب جديد
             });
+            searchResults.appendChild(li);
+        });
+        searchResults.style.display = "block"; // عرض القائمة
+    } else {
+        searchResults.innerHTML = "<li>لا توجد نتائج مطابقة.</li>";
+        searchResults.style.display = "block";
+    }
+}
 
-            document.addEventListener("click", (e) => {
-                if (!e.target.closest(".search-container")) {
-                    searchResults.style.display = "none";
-                }
-            });
-        </script>
+// إضافة الأحداث
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value;
+    searchPages(query);
+});
+
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".search-container")) {
+        searchResults.style.display = "none"; // إخفاء النتائج عند النقر خارج مربع البحث
+    }
+});
+
 </script>
 		
     </header>
